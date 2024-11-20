@@ -1,0 +1,44 @@
+#!/bin/bash
+if [[ -z "$1" || "$1" == "--help" ]]; then
+echo "UTILISATION: $0 --src <path/source> --dst <path/destination>"
+echo "Synchronise les fichiers de la source vers la destination."
+echo "Options:"
+echo " --src <source> Spécifie le répertoire source."
+echo " --dst <destination> Spécifie le répertoire de destination."
+echo " --help
+Affiche ce message d'aide."
+exit 0
+else
+SRC=""
+DST=""
+while [[ "$#" -gt 0 ]]; do
+case "$1" in
+--src)
+SRC="$2"
+shift 2
+;;
+--dst)
+DST="$2"
+shift 2
+;;
+*)
+echo "Option inconnue: $1"
+echo "Usage: $0 --src <source> --dst <destination>"
+exit 1
+;;
+esac
+done
+# Vérifier si --src et --dst sont définis
+if [[ -z "$SRC" || -z "$DST" ]]; then
+echo "BESOIN D'AIDE : $0 --help"
+echo "ERREUR : --src et --dst doivent être spécifiés."echo "UTILISATION: $0 --src <source> --dst <destination>"
+exit 1
+fi
+# Exécuter rsync avec les paramètres spécifiés
+echo ""
+echo "Synchronisation des fichiers de $SRC vers $DST..."
+echo "-v : Cette option augmente la quantité d'informations qui vous sont fournies
+pendant le transfert"
+echo "--progress: detail de progression"
+rsync -v --progress "$SRC" "$DST"
+fi
